@@ -21,7 +21,7 @@ namespace Inter_seller_task.Extensions
             option.UseSqlServer(configuration.GetConnectionString("StartConnection")));
             //Jwt
 
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+         //   services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();

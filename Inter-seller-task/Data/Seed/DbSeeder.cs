@@ -28,6 +28,7 @@ namespace Inter_seller_task.Data.Seed
 
             admin.PasswordHash = passwordHasher.HashPassword(admin, "Admin@123");
             await context.Users.AddAsync(admin);
+
             await context.SaveChangesAsync();
         }
     }

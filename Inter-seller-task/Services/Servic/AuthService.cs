@@ -1,4 +1,5 @@
 ﻿using Inter_seller_task.DTOs.Auth;
+using Inter_seller_task.Models.Common;
 using Inter_seller_task.Models.Entities;
 using Inter_seller_task.Repositories.Interfaces;
 using Inter_seller_task.Services.Interfaces;
@@ -18,9 +19,33 @@ namespace Inter_seller_task.Services.Servic
             _jwtService= jwtService;    
             _passwordHasher = passwordHasher;
         }
-        public Task<LoginResponseDto> AdminLoginAsync(LoginRequestDto request)
+        public async Task<LoginResponseDto> AdminLoginAsync(LoginRequestDto request)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByEmailAsync(request.Email); 
+
+            if (user is null)
+            { 
+                throw new UnauthorizedAccessException("Invalid email or password.");
+            }
+
+            if (user.Role != Role.Admin) 
+            { 
+                throw new UnauthorizedAccessException("Only an admin can use this login."); 
+            }
+            var passwordResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
+
+            if (passwordResult == PasswordVerificationResult.Failed) 
+            { 
+                throw new UnauthorizedAccessException("Invalid email or password."); 
+            }
+            var accessToken = _jwtService.GenerateToken(user); 
+            
+            return new LoginResponseDto 
+            {
+                AccessToken = accessToken,
+                //Role = user.Role.ToString()
+            };
         }
     }
+    
 }

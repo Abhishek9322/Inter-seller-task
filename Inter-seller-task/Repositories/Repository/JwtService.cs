@@ -1,6 +1,7 @@
 ﻿using Inter_seller_task.Models.Entities;
 using Inter_seller_task.Repositories.Interfaces;
 using Inter_seller_task.Settings;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,9 +12,9 @@ namespace Inter_seller_task.Repositories.Repository
     public class JwtService : IJwtService
     {
         private readonly JwtSettings _jwtSettings;
-        public JwtService(JwtSettings jwtSettings)
+        public JwtService(IOptions<JwtSettings> jwtSettings)
         {
-            _jwtSettings = jwtSettings;
+            _jwtSettings = jwtSettings.Value;
         }
         public string GenerateToken(User user)
         {
