@@ -1,0 +1,6 @@
+@Inter_seller_task_HostAddress = http://localhost:5136
+
+GET {{Inter_seller_task_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
