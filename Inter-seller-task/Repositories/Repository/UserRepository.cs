@@ -30,6 +30,14 @@ namespace Inter_seller_task.Repositories.Repository
              .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<User?> GetByIdWithSkillsAsync(int id)
+        {
+            return await _context.Users
+                       .Include(x => x.SellerSkills)
+                       .ThenInclude(x => x.Skill)
+                       .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

@@ -1,11 +1,12 @@
 ﻿using Inter_seller_task.DTOs.Auth;
 using Inter_seller_task.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inter_seller_task.Controllers
 {
-    [Route("api/Auth")]
+    [Route("api/Auth/Admin")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -21,6 +22,15 @@ namespace Inter_seller_task.Controllers
             var response=await _authService.AdminLoginAsync(loginRequest);
 
             return Ok(response);    
+        }
+
+        [HttpGet("test")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Test() 
+        {
+            return Ok(new 
+            { message = "Admin authorization is working." }
+            );
         }
     }
 }

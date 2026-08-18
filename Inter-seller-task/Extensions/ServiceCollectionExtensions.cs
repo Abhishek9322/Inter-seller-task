@@ -1,4 +1,5 @@
 ﻿using Inter_seller_task.Data;
+using Inter_seller_task.Mapping;
 using Inter_seller_task.Models.Entities;
 using Inter_seller_task.Repositories.Interfaces;
 using Inter_seller_task.Repositories.Repository;
@@ -7,6 +8,7 @@ using Inter_seller_task.Services.Servic;
 using Inter_seller_task.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Inter_seller_task.Extensions
@@ -25,12 +27,14 @@ namespace Inter_seller_task.Extensions
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<ISkillRepository, SkillRepository>();
 
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ISellerService, SellerService>();
+          
 
             // Password Hashing
 
@@ -38,8 +42,7 @@ namespace Inter_seller_task.Extensions
 
             // AutoMapper
 
-             services.AddAutoMapper(typeof(Program).Assembly);
-
+            services.AddAutoMapper(_ => { }, typeof(MappingProfile).Assembly);
 
             //Controllers
             services.AddControllers();
