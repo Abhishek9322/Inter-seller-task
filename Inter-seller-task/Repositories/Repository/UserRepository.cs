@@ -1,4 +1,5 @@
 ﻿using Inter_seller_task.Data;
+using Inter_seller_task.Models.Common;
 using Inter_seller_task.Models.Entities;
 using Inter_seller_task.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,25 @@ namespace Inter_seller_task.Repositories.Repository
                        .Include(x => x.SellerSkills)
                        .ThenInclude(x => x.Skill)
                        .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<int> GetSellerCountAsync()
+        {
+            return await _context.Users
+                 .CountAsync(x => x.Role == Role.Seller);
+        }
+
+        public async Task<List<User>> GetSellersAsync(int skip, int take)
+        {
+            return await _context.Users
+                   .AsNoTracking()
+                   .Where(x => x.Role == Role.Seller)
+                    .Include(x => x.SellerSkills)
+                   .ThenInclude(x => x.Skill)
+                    .OrderBy(x => x.Id)
+                   .Skip(skip)
+                   .Take(take)
+                    .ToListAsync();
         }
 
         public async Task SaveChangesAsync()

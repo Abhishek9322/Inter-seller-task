@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Inter_seller_task.Services.Servic
 {
-    public class AuthService : IAuthService
+    public partial class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
@@ -16,36 +16,71 @@ namespace Inter_seller_task.Services.Servic
         public AuthService(IUserRepository userRepository, IJwtService jwtService, PasswordHasher<User> passwordHasher)
         {
             _userRepository = userRepository;
-            _jwtService= jwtService;    
+            _jwtService = jwtService;
             _passwordHasher = passwordHasher;
         }
         public async Task<LoginResponseDto> AdminLoginAsync(LoginRequestDto request)
         {
-            var user = await _userRepository.GetByEmailAsync(request.Email); 
+            var user = await _userRepository.GetByEmailAsync(request.Email);
 
             if (user is null)
-            { 
+            {
                 throw new UnauthorizedAccessException("Invalid email or password.");
             }
 
-            if (user.Role != Role.Admin) 
-            { 
-                throw new UnauthorizedAccessException("Only an admin can use this login."); 
+            if (user.Role != Role.Admin)
+            {
+                throw new UnauthorizedAccessException("Only an admin can use this login.");
             }
             var passwordResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
 
-            if (passwordResult == PasswordVerificationResult.Failed) 
-            { 
-                throw new UnauthorizedAccessException("Invalid email or password."); 
+            if (passwordResult == PasswordVerificationResult.Failed)
+            {
+                throw new UnauthorizedAccessException("Invalid email or password.");
             }
-            var accessToken = _jwtService.GenerateToken(user); 
-            
-            return new LoginResponseDto 
+            var accessToken = _jwtService.GenerateToken(user);
+
+            return new LoginResponseDto
             {
                 AccessToken = accessToken,
                 //Role = user.Role.ToString()
             };
         }
+
+        public async Task<LoginResponseDto> SellerLoginAsync(LoginRequestDto request)
+        {
+            var user = await _userRepository.GetByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException(
+                    "Invalid email or password.");
+            }
+
+            if (user.Role != Role.Seller)
+            {
+                throw new UnauthorizedAccessException(
+                    "Invalid email or password.");
+            }
+
+            var passwordResult = _passwordHasher.VerifyHashedPassword(
+                    user,
+                    user.PasswordHash,
+                    request.Password);
+
+            if (passwordResult == PasswordVerificationResult.Failed)
+            {
+                throw new UnauthorizedAccessException(
+                    "Invalid email or password.");
+            }
+
+            var accessToken = _jwtService.GenerateToken(user);
+
+            return new LoginResponseDto
+            {
+                AccessToken = accessToken,
+                Role = user.Role.ToString()
+            };
+        }
     }
-    
 }

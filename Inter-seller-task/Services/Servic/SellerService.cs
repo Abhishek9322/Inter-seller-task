@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Inter_seller_task.DTOs.Common;
 using Inter_seller_task.DTOs.Seller;
 using Inter_seller_task.Models.Common;
 using Inter_seller_task.Models.Entities;
@@ -8,22 +9,25 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Inter_seller_task.Services.Servic
 {
-    public class SellerService : ISellerService
+    public partial class SellerService : ISellerService
     {
         private readonly IUserRepository _userRepository;
         private readonly ISkillRepository _skillRepository;
         private readonly PasswordHasher<User> _passwordHasher;
         private readonly IMapper _mapper;
+        private readonly IPaginationService _paginationService;
         public SellerService(
                               IUserRepository userRepository,
                              ISkillRepository skillRepository,
                              PasswordHasher<User> passwordHasher,
-                              IMapper mapper)
+                              IMapper mapper,
+                              IPaginationService paginationService)
         {
             _userRepository = userRepository;
             _skillRepository = skillRepository;
             _passwordHasher = passwordHasher;
             _mapper = mapper;
+            _paginationService = paginationService;
         }
         public async Task<SellerResponseDto> CreateSellerAsync(CreateSellerDto request)
         {
@@ -83,6 +87,11 @@ namespace Inter_seller_task.Services.Servic
 
             return _mapper.Map<SellerResponseDto>(
                 createdSeller);
+        }
+
+        public Task<PaginatedResponseDto<SellerResponseDto>> GetSellersAsync(int pageNumber, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
     
