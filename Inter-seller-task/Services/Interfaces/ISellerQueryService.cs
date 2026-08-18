@@ -3,9 +3,8 @@ using Inter_seller_task.DTOs.Seller;
 
 namespace Inter_seller_task.Services.Interfaces
 {
-    public interface ISellerService
+    public interface ISellerQueryService
     {
-        Task<SellerResponseDto> CreateSellerAsync(CreateSellerDto request);
-     
+        Task<PaginatedResponseDto<SellerResponseDto>> GetSellersAsync(int pageNumber, int pageSize);
     }
 }

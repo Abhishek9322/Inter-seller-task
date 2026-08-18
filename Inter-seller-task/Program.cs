@@ -5,9 +5,11 @@ using Inter_seller_task.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+QuestPDF.Settings.License = LicenseType.Evaluation;
 builder.Services.AddApplicationServices(builder.Configuration); 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 

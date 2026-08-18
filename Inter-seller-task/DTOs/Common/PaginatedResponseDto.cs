@@ -1,6 +1,6 @@
 ﻿namespace Inter_seller_task.DTOs.Common
 {
-    public class PagedResponseDto<T>
+    public class PaginatedResponseDto<T>
     {
         public List<T> Items { get; set; } = new();
 

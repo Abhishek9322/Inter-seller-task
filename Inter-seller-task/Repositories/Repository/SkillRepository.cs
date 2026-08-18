@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Inter_seller_task.Repositories.Repository
 {
-    public class SkillRepository : ISkillRepository
+    public partial class SkillRepository : ISkillRepository
     {
         private readonly ApplicationDbContext _context;
         public SkillRepository(ApplicationDbContext context)

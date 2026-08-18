@@ -9,6 +9,8 @@ using Inter_seller_task.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using static Inter_seller_task.Repositories.Repository.SkillRepository;
+using static Inter_seller_task.Services.Servic.SellerService;
 
 
 namespace Inter_seller_task.Extensions
@@ -28,13 +30,17 @@ namespace Inter_seller_task.Extensions
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISkillRepository, SkillRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<ISellerService, SellerService>();
-          
+            services.AddScoped<IPaginationService, PaginationService>();
+            services.AddScoped<ISellerQueryService, SellerQueryService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IPdfService, PdfService>();
 
             // Password Hashing
 

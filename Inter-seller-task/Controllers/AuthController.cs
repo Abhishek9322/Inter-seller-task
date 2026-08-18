@@ -32,5 +32,14 @@ namespace Inter_seller_task.Controllers
             { message = "Admin authorization is working." }
             );
         }
+
+        [HttpPost("SellerLogin")]
+        public async Task<IActionResult> SellerLogin(LoginRequestDto request)
+        {
+            var response =
+                await _authService.SellerLoginAsync(request);
+
+            return Ok(response);
+        }
     }
 }
